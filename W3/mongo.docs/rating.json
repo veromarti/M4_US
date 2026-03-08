@@ -1,0 +1,8 @@
+{
+  "_id": "ObjectId()",
+  "userId": "ObjectId()",
+  "contentId": "ObjectId()",
+  "rating": 5,
+  "review": "Excelente película",
+  "createdAt": "ISODate()"
+}

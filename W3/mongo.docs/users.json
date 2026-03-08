@@ -1,0 +1,16 @@
+{
+  "_id": "ObjectId()",
+  "name": "Veronica Martinez",
+  "email": "vero@mail.com",
+  "age": 26,
+  "country": "Colombia",
+  "subscriptionType": "Premium",
+  "watchHistory": [
+    {
+      "contentId": "ObjectId()",
+      "watchedAt": "ISODate('2026-03-01')",
+      "progress": 100
+    }
+  ],
+  "createdAt": "ISODate()"
+}

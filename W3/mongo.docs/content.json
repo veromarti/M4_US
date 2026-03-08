@@ -1,0 +1,11 @@
+{
+  "_id": "ObjectId()",
+  "title": "Inception",
+  "type": "movie", 
+  "genre": ["Sci-Fi", "Thriller"],
+  "duration": 148,
+  "releaseYear": 2010,
+  "seasons": null,
+  "averageRating": 4.5,
+  "createdAt": "ISODate()"
+}

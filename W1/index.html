@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>DER — Hospital Vida Sana</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+  :root{--bg:#f0f4f8;--border:#dde3ec;--text:#1a2035;--muted:#6b7a99;--pk:#2563eb;--pk-bg:#eff6ff;--fk:#7c3aed;--fk-bg:#f5f3ff;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);padding:28px 16px 60px;}
+  header{text-align:center;margin-bottom:28px;}
+  .badge{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--border);border-radius:100px;padding:5px 14px;font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+  header h1{font-size:1.7rem;font-weight:700;}
+  header p{color:var(--muted);font-size:0.83rem;margin-top:5px;}
+  .legend{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-bottom:28px;}
+  .li{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border);border-radius:7px;padding:5px 11px;font-size:11px;font-weight:500;}
+  .ld{width:8px;height:8px;border-radius:50%;}
+  .canvas{position:relative;max-width:1000px;margin:0 auto;}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .entity{background:#fff;border-radius:12px;border:2px solid var(--border);overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.07);}
+  .ehead{padding:12px 15px;display:flex;align-items:center;gap:9px;}
+  .eicon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+  .etitle{font-size:0.84rem;font-weight:700;}.esub{font-size:9px;font-weight:500;opacity:0.6;text-transform:uppercase;letter-spacing:1px;}
+  .eattrs{border-top:1px solid var(--border);padding:7px 0;}
+  .attr{display:flex;align-items:center;gap:6px;padding:3.5px 14px;font-size:11px;font-family:'JetBrains Mono',monospace;}
+  .attr:hover{background:#f8fafc;}
+  .adot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .apk{background:var(--pk);}.afk{background:var(--fk);}.areg{background:#cbd5e1;}
+  .aname{flex:1;}.atype{color:var(--muted);font-size:9px;}
+  .abadge{font-size:8px;font-weight:700;padding:1px 4px;border-radius:4px;}
+  .bpk{background:var(--pk-bg);color:var(--pk);}.bfk{background:var(--fk-bg);color:var(--fk);}
+  .div{height:1px;background:var(--border);margin:4px 14px;}
+  .ep .ehead{background:#f0f9ff;border-bottom:2px solid #bae6fd;}.ep .eicon{background:#bae6fd;}.ep{border-color:#7dd3fc;}
+  .em .ehead{background:#f0fdf4;border-bottom:2px solid #bbf7d0;}.em .eicon{background:#bbf7d0;}.em{border-color:#86efac;}
+  .ec .ehead{background:#fffbeb;border-bottom:2px solid #fde68a;}.ec .eicon{background:#fde68a;}.ec{border-color:#fcd34d;}
+  .ed .ehead{background:#fff1f2;border-bottom:2px solid #fecdd3;}.ed .eicon{background:#fecdd3;}.ed{border-color:#fca5a5;}
+  .ee .ehead{background:#f5f3ff;border-bottom:2px solid #ddd6fe;}.ee .eicon{background:#ddd6fe;}.ee{border-color:#c4b5fd;}
+  .eDp .ehead{background:#fdf2f8;border-bottom:2px solid #f9a8d4;}.eDp .eicon{background:#f9a8d4;}.eDp{border-color:#f472b6;}
+  svg.lines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;}
+  .rels{max-width:1000px;margin:28px auto 0;}
+  .rels h3{font-size:0.9rem;font-weight:700;border-left:3px solid #f59e0b;padding-left:10px;margin-bottom:12px;}
+  .rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+  .rcard{background:#fff;border:1px solid var(--border);border-radius:9px;padding:12px 14px;}
+  .rent{font-weight:700;font-size:12px;display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap;}
+  .cn{font-family:'JetBrains Mono',monospace;font-size:10px;background:#f1f5f9;padding:2px 6px;border-radius:4px;color:var(--pk);font-weight:600;}
+  .rdesc{font-size:10.5px;color:var(--muted);}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">🏥 Hospital Vida Sana</div>
+  <h1>Diagrama Entidad–Relación (DER)</h1>
+  <p>Modelo Conceptual Normalizado · Gestión de Pacientes, Médicos, Citas y Diagnósticos</p>
+</header>
+<div class="legend">
+  <div class="li"><div class="ld" style="background:#2563eb"></div>Clave Primaria (PK)</div>
+  <div class="li"><div class="ld" style="background:#7c3aed"></div>Clave Foránea (FK)</div>
+  <div class="li"><div class="ld" style="background:#cbd5e1"></div>Atributo regular</div>
+</div>
+<div class="canvas">
+  <div class="grid">
+    <div class="entity ep" id="paciente">
+      <div class="ehead"><div class="eicon">🧑</div><div><div class="etitle">PACIENTE</div><div class="esub">Entidad principal</div></div></div>
+      <div class="eattrs">
+        <div class="attr"><div class="adot apk"></div><span class="aname">id_paciente</span><span class="atype">INT</span><span class="abadge bpk">PK</span></div>
+        <div class="div"></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">nombre</span><span class="atype">VARCHAR(100)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">apellido</span><span class="atype">VARCHAR(100)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">fecha_nacimiento</span><span class="atype">DATE</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">sexo</span><span class="atype">ENUM</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">telefono</span><span class="atype">VARCHAR(20)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">email</span><span class="atype">VARCHAR(120)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">direccion</span><span class="atype">VARCHAR(200)</span></div>
+      </div>
+    </div>
+    <div class="entity ec" id="cita">
+      <div class="ehead"><div class="eicon">📅</div><div><div class="etitle">CITA</div><div class="esub">Entidad central</div></div></div>
+      <div class="eattrs">
+        <div class="attr"><div class="adot apk"></div><span class="aname">id_cita</span><span class="atype">INT</span><span class="abadge bpk">PK</span></div>
+        <div class="div"></div>
+        <div class="attr"><div class="adot afk"></div><span class="aname">id_paciente</span><span class="atype">INT</span><span class="abadge bfk">FK</span></div>
+        <div class="attr"><div class="adot afk"></div><span class="aname">id_medico</span><span class="atype">INT</span><span class="abadge bfk">FK</span></div>
+        <div class="div"></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">fecha_hora</span><span class="atype">DATETIME</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">motivo</span><span class="atype">TEXT</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">status</span><span class="atype">ENUM</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">created_at</span><span class="atype">DATETIME</span></div>
+      </div>
+    </div>
+    <div class="entity em" id="medico">
+      <div class="ehead"><div class="eicon">👨‍⚕️</div><div><div class="etitle">MÉDICO</div><div class="esub">Entidad principal</div></div></div>
+      <div class="eattrs">
+        <div class="attr"><div class="adot apk"></div><span class="aname">id_medico</span><span class="atype">INT</span><span class="abadge bpk">PK</span></div>
+        <div class="div"></div>
+        <div class="attr"><div class="adot afk"></div><span class="aname">id_especialidad</span><span class="atype">INT</span><span class="abadge bfk">FK</span></div>
+        <div class="attr"><div class="adot afk"></div><span class="aname">id_departamento</span><span class="atype">INT</span><span class="abadge bfk">FK</span></div>
+        <div class="div"></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">nombre</span><span class="atype">VARCHAR(100)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">apellido</span><span class="atype">VARCHAR(100)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">num_licencia</span><span class="atype">VARCHAR(50)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">email</span><span class="atype">VARCHAR(120)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">telefono</span><span class="atype">VARCHAR(20)</span></div>
+      </div>
+    </div>
+    <div class="entity ee" id="especialidad">
+      <div class="ehead"><div class="eicon">🔬</div><div><div class="etitle">ESPECIALIDAD</div><div class="esub">Catálogo</div></div></div>
+      <div class="eattrs">
+        <div class="attr"><div class="adot apk"></div><span class="aname">id_especialidad</span><span class="atype">INT</span><span class="abadge bpk">PK</span></div>
+        <div class="div"></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">nombre</span><span class="atype">VARCHAR(100)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">descripcion</span><span class="atype">TEXT</span></div>
+      </div>
+    </div>
+    <div class="entity ed" id="diagnostico">
+      <div class="ehead"><div class="eicon">🩺</div><div><div class="etitle">DIAGNÓSTICO</div><div class="esub">Resultado de cita</div></div></div>
+      <div class="eattrs">
+        <div class="attr"><div class="adot apk"></div><span class="aname">id_diagnostico</span><span class="atype">INT</span><span class="abadge bpk">PK</span></div>
+        <div class="div"></div>
+        <div class="attr"><div class="adot afk"></div><span class="aname">id_cita</span><span class="atype">INT</span><span class="abadge bfk">FK</span></div>
+        <div class="div"></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">descripcion</span><span class="atype">TEXT</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">codigo_cie10</span><span class="atype">VARCHAR(10)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">tratamiento</span><span class="atype">TEXT</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">fecha_registro</span><span class="atype">DATETIME</span></div>
+      </div>
+    </div>
+    <div class="entity eDp" id="departamento">
+      <div class="ehead"><div class="eicon">🏢</div><div><div class="etitle">DEPARTAMENTO</div><div class="esub">Catálogo</div></div></div>
+      <div class="eattrs">
+        <div class="attr"><div class="adot apk"></div><span class="aname">id_departamento</span><span class="atype">INT</span><span class="abadge bpk">PK</span></div>
+        <div class="div"></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">nombre</span><span class="atype">VARCHAR(100)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">piso</span><span class="atype">VARCHAR(20)</span></div>
+        <div class="attr"><div class="adot areg"></div><span class="aname">telefono_ext</span><span class="atype">VARCHAR(10)</span></div>
+      </div>
+    </div>
+  </div>
+  <svg class="lines" id="svgl"></svg>
+</div>
+<div class="rels">
+  <h3>Cardinalidades y Relaciones</h3>
+  <div class="rgrid">
+    <div class="rcard"><div class="rent">PACIENTE <span style="color:#94a3b8">→</span> CITA <span class="cn">1 : N</span></div><div class="rdesc">Un paciente puede tener muchas citas; cada cita pertenece a un solo paciente.</div></div>
+    <div class="rcard"><div class="rent">MÉDICO <span style="color:#94a3b8">→</span> CITA <span class="cn">1 : N</span></div><div class="rdesc">Un médico puede atender muchas citas; cada cita es atendida por un solo médico.</div></div>
+    <div class="rcard"><div class="rent">CITA <span style="color:#94a3b8">→</span> DIAGNÓSTICO <span class="cn">1 : 1</span></div><div class="rdesc">Cada cita genera máximo un diagnóstico. Dependencia existencial.</div></div>
+    <div class="rcard"><div class="rent">ESPECIALIDAD <span style="color:#94a3b8">→</span> MÉDICO <span class="cn">1 : N</span></div><div class="rdesc">Una especialidad puede asignarse a varios médicos; cada médico tiene una sola.</div></div>
+    <div class="rcard"><div class="rent">DEPARTAMENTO <span style="color:#94a3b8">→</span> MÉDICO <span class="cn">1 : N</span></div><div class="rdesc">Un departamento puede tener varios médicos; cada médico pertenece a uno.</div></div>
+  </div>
+</div>
+<script>
+function draw(){
+  const canvas=document.querySelector('.canvas');
+  const svg=document.getElementById('svgl');
+  svg.innerHTML='';
+  const W=canvas.offsetWidth,H=canvas.offsetHeight;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  function box(id){
+    const cr=canvas.getBoundingClientRect();
+    const r=document.getElementById(id).getBoundingClientRect();
+    return{cx:r.left-cr.left+r.width/2,cy:r.top-cr.top+r.height/2,t:r.top-cr.top,b:r.top-cr.top+r.height,l:r.left-cr.left,r:r.left-cr.left+r.width};
+  }
+  function conn(x1,y1,x2,y2,color,lbl){
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    const mx=(x1+x2)/2,my=(y1+y2)/2;
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',`M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2} ${y2}`);
+    path.setAttribute('stroke',color);path.setAttribute('stroke-width','2.5');path.setAttribute('fill','none');path.setAttribute('opacity','0.8');
+    g.appendChild(path);
+    const bg=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    bg.setAttribute('x',mx-18);bg.setAttribute('y',my-10);bg.setAttribute('width','36');bg.setAttribute('height','20');bg.setAttribute('rx','10');bg.setAttribute('fill',color);
+    g.appendChild(bg);
+    const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x',mx);txt.setAttribute('y',my+4.5);txt.setAttribute('text-anchor','middle');
+    txt.setAttribute('font-family','Plus Jakarta Sans,sans-serif');txt.setAttribute('font-size','9');txt.setAttribute('font-weight','700');txt.setAttribute('fill','white');txt.textContent=lbl;
+    g.appendChild(txt);svg.appendChild(g);
+  }
+  const p=box('paciente'),c=box('cita'),m=box('medico');
+  const e=box('especialidad'),d=box('diagnostico'),dep=box('departamento');
+  conn(p.r,p.cy,c.l,c.cy,'#0ea5e9','1 : N');
+  conn(m.l,m.cy,c.r,c.cy,'#10b981','1 : N');
+  conn(c.cx,c.b,d.cx,d.t,'#f59e0b','1 : 1');
+  conn(e.r,e.cy,m.l,m.b-40,'#8b5cf6','1 : N');
+  conn(dep.l,dep.cy,m.r,m.b-15,'#ec4899','1 : N');
+}
+window.addEventListener('load',()=>setTimeout(draw,200));
+window.addEventListener('resize',draw);
+</script>
+</body>
+</html>
